@@ -1,0 +1,38 @@
+version: '3'
+tasks:
+  network:
+    - ganache
+  network-v2:
+    - ganache --port 9474 --wallet.totalAccounts 3  --wallet.accountKeysPath "orgs.json" --chain.networkId 9474 --chain.chainId 9474 --server.ws true
+    # - anvil --port 9474 --accounts 3 --chain-id 9474 --config-out orgs.json
+    # - clef newaccount --keystore geth-tutorial/keystore
+    # - clef --keystore geth-tutorial/keystore --configdir geth-tutorial/clef --chainid 9474
+    # - geth --sepolia --datadir geth-tutorial --authrpc.addr localhost --authrpc.port 9474 --authrpc.vhosts localhost --authrpc.jwtsecret geth-tutorial/jwtsecret --http --http.api eth,net --signer=geth-tutorial/clef/clef.ipc --http
+
+
+
+
+
+  build:
+    # - truffle compile
+    # - truffle migrate
+    # - solc --abi "./contracts/*.sol" -o build/abi
+    # - abigen --abi "./build/abi/Hero.abi" --pkg main --type hero --out hero.go
+
+    - for: ["RequestContract"]
+      task: go-gen
+      vars:
+        file: '{{.ITEM}}'
+
+  go-gen:
+    cmds:
+      - find ./build -type f -delete
+      - solc --abi "./contracts/{{.file}}.sol" -o build/abi --overwrite --optimize
+      - solc --bin "./contracts/{{.file}}.sol" -o build/bin --overwrite --optimize
+      - abigen --bin="./build/bin/{{.file}}.bin" --abi ./build/abi/{{.file}}.abi --pkg dlt --type {{.file}} --out ./build/dlt/{{.file}}.go
+
+
+
+
+
+
