@@ -9,10 +9,6 @@ tasks:
     # - clef --keystore geth-tutorial/keystore --configdir geth-tutorial/clef --chainid 9474
     # - geth --sepolia --datadir geth-tutorial --authrpc.addr localhost --authrpc.port 9474 --authrpc.vhosts localhost --authrpc.jwtsecret geth-tutorial/jwtsecret --http --http.api eth,net --signer=geth-tutorial/clef/clef.ipc --http
 
-
-
-
-
   build:
     # - truffle compile
     # - truffle migrate
